@@ -15,7 +15,7 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery
 
 # Initializing the bot with BotFather's token.
 from telegram.ext import Updater
-updater = Updater(token = '507076263:AAHcj5n7AYv6M4dDJ1VYNDp-RjbLXHf2OHk')
+updater = Updater(token = 'token')
 dispatcher = updater.dispatcher
 selected_command = {}
 mods = ['dakotabuck', 'misterlovegood', 'pankeye']
