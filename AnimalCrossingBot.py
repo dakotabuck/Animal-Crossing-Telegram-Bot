@@ -18,6 +18,7 @@ from telegram.ext import Updater
 updater = Updater(token = '507076263:AAHcj5n7AYv6M4dDJ1VYNDp-RjbLXHf2OHk')
 dispatcher = updater.dispatcher
 selected_command = {}
+mods = ['dakotabuck', 'misterlovegood', 'pankeye']
 
 # Setting up logging
 import logging
@@ -151,12 +152,30 @@ def report(bot, update, args):
     bot.send_message(chat_id=update.message.chat_id,
                      text='Thank you for your report. The mods have been notified.')
 
-    notify_conversation = open('chat_id/dakotabuck.txt', 'rU')
-    notify_conversation_id = notify_conversation.read();
-    notify_conversation.close()
-    bot.send_message(chat_id=notify_conversation_id, text='Anonymous report sent. ID: ' + str(update.update_id))
+    for x in mods:
+        if os.path.isfile('chat_id/' + x + '.txt'):
+            notify_conversation = open('chat_id/' + x + '.txt', 'rU')
+            notify_conversation_id = notify_conversation.read();
+            notify_conversation.close()
+            bot.send_message(chat_id=notify_conversation_id, text='Anonymous report sent. ID: ' + str(update.update_id))
     button_menu(bot, update)
-    print(update)
+
+def get_report(bot, update, args):
+    text_report = ''.join(args);
+    send_str = '';
+    if not os.path.isfile('reports/' + text_report + '.read.txt'):
+        send_str += '<b>This message has not been read by other moderators</b>\n'
+    else:
+        send_str += '<i>This message has already been read.</i>\n'
+    reportfile = open('reports/' + text_report + '.txt')
+    send_str += "Report body: \n" + reportfile.read()
+    reportfile.close()
+    bot.send_message(chat_id=update.message.chat_id, text=send_str, parse_mode='html')
+    readfile = open('reports/' + text_report + '.read.txt', 'w')
+    readfile.write(update.message.from_user.username);
+    readfile.close()
+    button_menu(bot, update)
+
 
 # Function for /getcode
 def getcode(bot, update, args):
@@ -212,6 +231,10 @@ dispatcher.add_handler(addcode_handler)
 # /getcode handler
 getcode_handler = CommandHandler('getcode', getcode, pass_args=True)
 dispatcher.add_handler(getcode_handler)
+
+# /readreport handler
+readreport_handler = CommandHandler('readreport', get_report, pass_args=True)
+dispatcher.add_handler(readreport_handler)
 
 # /exit handler - admin only
 exit_handler = CommandHandler('exit', stop_bot)
