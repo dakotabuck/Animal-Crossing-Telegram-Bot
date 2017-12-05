@@ -9,7 +9,7 @@
 #   the chat's friend code registry.
 
 # Import OS for file operations
-import os
+import os, sys
 
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery
 
@@ -183,6 +183,11 @@ def getcode(bot, update, args):
 def unknown(bot, update):
     bot.send_message(chat_id=update.message.chat_id, text = 'Invalid command, saltlick')
 
+def stop_bot(bot, update):
+    print("bot interrupt requested by " + update.message.from_user.username + "\n")
+    sys.exit()
+
+
 
 # Event Handling
 from telegram.ext import CommandHandler, MessageHandler, Filters, CallbackQueryHandler
@@ -207,6 +212,10 @@ dispatcher.add_handler(addcode_handler)
 # /getcode handler
 getcode_handler = CommandHandler('getcode', getcode, pass_args=True)
 dispatcher.add_handler(getcode_handler)
+
+# /exit handler - admin only
+exit_handler = CommandHandler('exit', stop_bot)
+dispatcher.add_handler(exit_handler)
 
 # Invalid command handler
 # !IMPORTANT! MUST BE THE LAST HANDLER DEFINED
