@@ -185,7 +185,7 @@ def unknown(bot, update):
 
 def stop_bot(bot, update):
     print("bot interrupt requested by " + update.message.from_user.username + "\n")
-    sys.exit()
+    os.kill(os.getpid(), signal.SIGINT)
 
 
 
