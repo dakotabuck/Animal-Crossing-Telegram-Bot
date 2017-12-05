@@ -99,7 +99,7 @@ def send_help(bot, update):
         +'notifies the user you looked up that their '
         +'friend code was requested and by whom</i>.\n'
         +'<b>Set Code</b>: use this to set your own Pocket '
-        +'Camp code so that others can look you up! '
+        +'Camp code so that others can look you up! \n'
         +'<b>Anonymous Group Abuse Report</b>: use this '
         +'when you want to report channel abuse, but don\'t'
         +'want to contact a mod directly. If the issue is '
